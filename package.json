@@ -1,5 +1,28 @@
 {
-	"dependencies": {
-		"node-addon-api": "*"
-	}
+   "name": "nullbyte",
+   "version": "1.0.0",
+   "description": "Write empty bytes to provided memory patterns by memory patching.",
+   "author": "eternal <eternal.git@gmail.com> (https://github.com/localip)",
+   "license": "Unlicensed",
+   "scripts": {
+      "build": "node ./install.js",
+      "build-ia32": "node-gyp clean configure build --arch=ia32",
+      "build-x64": "node-gyp clean configure build --arch=x64"
+   },
+   "main": "index.js",
+   "gypfile": true,
+   "keywords": [
+      "memory patching",
+      "empty byte",
+      "nullbyte",
+      "memory",
+      "empty",
+      "win32",
+      "null",
+      "byte",
+      "js"
+   ],
+   "dependencies": {
+      "node-addon-api": "*"
+   }
 }
