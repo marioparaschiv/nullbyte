@@ -68,7 +68,7 @@ Napi::Value patch(const Napi::CallbackInfo& info) {
         std::cout << PREFIX << "pattern " << i + 1 << ": successfully sprayed " << bytes << " bytes" << "\n";
     }
 
-    return Napi::Boolean::New(env, failed > 0 ? true : false);
+    return Napi::Boolean::New(env, failed > 0 ? false : true);
 }
 
 Napi::Object initialize(Napi::Env env, Napi::Object exports) {
