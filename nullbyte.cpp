@@ -16,12 +16,12 @@ Napi::Value patch(const Napi::CallbackInfo& info) {
 
     if (!isValidPID) {
         Napi::TypeError::New(env, "first argument pid must be of type number").ThrowAsJavaScriptException();
-        return env.Null();
+        return Napi::Boolean::New(env, false);
     }
 
     if (!hasValidPatterns) {
         Napi::TypeError::New(env, "second argument patterns must be of type string[]").ThrowAsJavaScriptException();
-        return env.Null();
+        return Napi::Boolean::New(env, false);
     }
 
     int pid = info[0].As<Napi::Number>().Int32Value();
@@ -33,9 +33,10 @@ Napi::Value patch(const Napi::CallbackInfo& info) {
     auto process = Util::openProcess(pid, &error);
     if (error != "") {
         std::cout << PREFIX << "failed to attach to process" << "\n";
-        return env.Null();
+        return Napi::Boolean::New(env, false);
     }
 
+    int failed = 0;
     for (int i = 0; i < buf.Length(); i++) {
         std::cout << PREFIX << "searching with pattern " << i + 1 << "\n";
         auto pattern = buf.Get(i).As<Napi::String>().Utf8Value();
@@ -46,6 +47,7 @@ Napi::Value patch(const Napi::CallbackInfo& info) {
 
         if (res == 0) {
             std::cout << PREFIX << "failed to find one of the patterns provided" << "\n";
+            failed++;
             continue;
         }
 
@@ -65,8 +67,8 @@ Napi::Value patch(const Napi::CallbackInfo& info) {
 
         std::cout << PREFIX << "pattern " << i + 1 << ": successfully sprayed " << bytes << " bytes" << "\n";
     }
-    
-    return env.Null();
+
+    return Napi::Boolean::New(env, failed > 0 ? true : false);
 }
 
 Napi::Object initialize(Napi::Env env, Napi::Object exports) {

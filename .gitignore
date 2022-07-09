@@ -1,2 +1,7 @@
 /build/Debug/
-/.vs
+/build/Release/
+.vs
+*.ipdb
+*.iobj
+*.pdb
+*
