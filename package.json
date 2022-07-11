@@ -1,6 +1,6 @@
 {
    "name": "nullbyte",
-   "version": "1.0.0",
+   "version": "1.0.1",
    "description": "Write empty bytes to provided memory patterns by memory patching.",
    "author": "eternal <eternal.git@gmail.com> (https://github.com/localip)",
    "license": "Unlicensed",
