@@ -9,18 +9,20 @@
 
 ### Usage
 
-ESM
 ```ts
 import { patch } from 'nullbyte';
 
-patch(process.pid, ['D3 FT 55 ? 29', 'pattern2'])
-```
+/**
+ * @param {Number} pid - Process ID to attach to
+ * @param {string[]} patterns - Array of memory patterns to null out
+ * @param {boolean=false} matchOne - Whether to consider the patch successful if atleast one of the patterns match
+ */
 
-CJS
-```ts
-const { patch } = require('nullbyte');
+// Requires both patterns to be patched to consider the patch successful
+patch(process.pid, ['D3 FT 55 ? 29', 'pattern2']);
 
-patch(process.pid, ['D3 FT 55 ? 29', 'pattern2'])
+// Requires only one of the patterns to be patched to consider the patch successful
+patch(process.pid, ['D3 FT 55 ? 29', 'pattern2'], true);
 ```
 
 ### Installation
@@ -44,4 +46,7 @@ nullbyte is very strict on what "success" means. nullbyte will need the followin
 - Process ID is a number
 - Patterns is an array
 - Process ID is a valid running process
+
+If `matchOne` is not specified or is false the following is also required:
+
 - All patterns are successfuly found in memory (if one doesn't get found, nullbyte will deem the patch unsuccessful, even if one pattern was patched)

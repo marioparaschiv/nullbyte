@@ -13,6 +13,7 @@ Napi::Value patch(const Napi::CallbackInfo& info) {
 
     bool isValidPID = info[0].IsNumber();
     bool hasValidPatterns = info[1].IsArray();
+    bool hasValidMatchOne = info[2].IsBoolean();
 
     if (!isValidPID) {
         Napi::TypeError::New(env, "first argument pid must be of type number").ThrowAsJavaScriptException();
@@ -24,8 +25,14 @@ Napi::Value patch(const Napi::CallbackInfo& info) {
         return Napi::Boolean::New(env, false);
     }
 
+    if (info[2] && !hasValidMatchOne) {
+        Napi::TypeError::New(env, "third argument matchOne must be of type boolean").ThrowAsJavaScriptException();
+        return Napi::Boolean::New(env, false);
+    }
+
     int pid = info[0].As<Napi::Number>().Int32Value();
     Napi::Array buf = info[1].As<Napi::Array>();
+    bool matchOne = hasValidMatchOne ? info[2].As<Napi::Boolean>().ToBoolean() : false;
 
     std::cout << PREFIX << "attempting to attach process" << "\n";
 
@@ -40,7 +47,7 @@ Napi::Value patch(const Napi::CallbackInfo& info) {
 
     int failed = 0;
     for (int i = 0; i < buf.Length(); i++) {
-        std::cout << PREFIX << "searching with pattern " << i + 1 << "\n";
+        std::cout << PREFIX << "pattern " << i + 1 << ": searching" << "\n";
         auto pattern = buf.Get(i).As<Napi::String>().Utf8Value();
 
         char* c = const_cast<char*>(pattern.c_str());
@@ -48,7 +55,7 @@ Napi::Value patch(const Napi::CallbackInfo& info) {
         auto res = Util::findPatternByModule(process.handle, process.process.szExeFile, pattern.c_str(), 0, 0);
 
         if (res == 0) {
-            std::cout << PREFIX << "failed to find one of the patterns provided" << "\n";
+            std::cout << PREFIX << "pattern " << i + 1 << ": failed to find match" << "\n";
             failed++;
             continue;
         }
@@ -70,7 +77,7 @@ Napi::Value patch(const Napi::CallbackInfo& info) {
         std::cout << PREFIX << "pattern " << i + 1 << ": successfully sprayed " << bytes << " bytes" << "\n";
     }
 
-    return Napi::Boolean::New(env, failed > 0 ? false : true);
+    return Napi::Boolean::New(env, matchOne ? (failed != buf.Length() ? true : false) : (failed > 0 ? false : true));
 }
 
 Napi::Object initialize(Napi::Env env, Napi::Object exports) {
