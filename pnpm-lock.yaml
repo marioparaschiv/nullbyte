@@ -1,13 +1,12 @@
-lockfileVersion: 5.4
-
-specifiers:
-  node-addon-api: '*'
+lockfileVersion: '6.0'
 
 dependencies:
-  node-addon-api: 4.3.0
+  node-addon-api:
+    specifier: '*'
+    version: 4.3.0
 
 packages:
 
-  /node-addon-api/4.3.0:
+  /node-addon-api@4.3.0:
     resolution: {integrity: sha512-73sE9+3UaLYYFmDsFZnqCInzPyh3MqIwZO9cw58yIqAZhONrrabrYyYe3TuIqtIiOuTXVhsGau8hcrhhwSsDIQ==}
     dev: false
