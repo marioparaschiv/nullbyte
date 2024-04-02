@@ -2,7 +2,7 @@
 	"name": "nullbyte",
 	"version": "1.0.2",
 	"description": "Write empty bytes to provided memory patterns by memory patching.",
-	"author": "Mario <mariovparaschiv@gmail.com> (github.com/localip)",
+	"author": "Mario <me@marioparaschiv.com> (github.com/marioparaschiv)",
 	"license": "Unlicensed",
 	"scripts": {
 		"build": "node ./install.js",
