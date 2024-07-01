@@ -50,3 +50,6 @@ nullbyte is very strict on what "success" means. nullbyte will need the followin
 If `matchOne` is not specified or is `false`, the following is also required:
 
 - All patterns are successfuly found in memory (if one doesn't get found, nullbyte will deem the patch unsuccessful, even if one pattern was patched)
+
+## Licensing
+See [LICENSE](/LICENSE).
